@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bem-Vindo à Missão Carmen Sandiego</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Press Start 2P', cursive;
+            background-color: #000;
+            color: #fff;
+            text-align: center;
+        }
+        .container {
+            padding-top: 100px;
+        }
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            color: #ff9f1c; /* Amarelo */
+            text-shadow: 3px 3px 0 #000; /* Sombra */
+        }
+        p {
+            font-size: 1.2em;
+            margin-bottom: 30px;
+        }
+        .btn-container {
+            display: flex;
+            flex-direction: column; /* Ajusta a direção dos botões para vertical */
+            align-items: center; /* Centraliza os botões na vertical */
+            gap: 10px; /* Espaçamento entre os botões */
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #ff9f1c;
+            color: #000; /* Texto preto */
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 1.2em;
+            transition: background-color 0.3s;
+            text-shadow: none; /* Remover sombra */
+        }
+        .btn:hover {
+            background-color: #ff7b00;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <audio autoplay id="backgroundAudio" volume="0.05">
+            <source src="assets/carmen_site.mp3" type="audio/mpeg">
+            Seu navegador não suporta o elemento de áudio.
+        </audio>
+        <script>
+            // Espera até que a página seja totalmente carregada
+            window.onload = function() {
+                // Obtém o elemento de áudio pelo ID
+                var audio = document.getElementById("backgroundAudio");
+                // Define o volume para 70% (0.7)
+                audio.volume = 0.05;
+            };
+        </script>
+        <h1>Bem-Vindo à Missão Carmen Sandiego</h1>
+        <p>Você está pronto para embarcar em uma jornada épica em busca da vilã mais famosa do mundo?</p>
+        <div class="btn-container">
+            <a href="novo_jogo.html" class="btn">Novo Jogo</a>
+            <a href="carregar.html" class="btn">Carregar</a>
+            <a href="opcoes.html" class="btn">Opções</a>
+            <a href="sair.html" class="btn">Sair</a>
+        </div>
+    </div>
+</body>
+</html>
