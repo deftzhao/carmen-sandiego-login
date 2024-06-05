@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tela de Cadastro</title>
+    <style>
+         body {
+            font-family: 'Press Start 2P', cursive;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+            background-image: url('https://i.pinimg.com/originals/79/98/2f/79982f861d571bed57fa8cafc33fea64.gif');
+            background-size: cover;
+            background-repeat: no-repeat;
+            position: relative;
+        }
+        .container {
+            position: relative;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            height: 800px;
+            background-image: url('https://i.pinimg.com/564x/8a/9b/43/8a9b434004d294b33df4b17fad22c51b.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            margin-left: -500px;
+        }
+        .container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .container input[type="text"],
+        .container input[type="email"],
+        .container input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        .container input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            background-color: #000000;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .container input[type="submit"]:hover {
+            background-color: #8a0303;
+        }
+
+        .confirmation-message{
+            position: fixed;
+            bottom: 20px; /* Distância do fundo */
+            left: 20px; /* Distância da esquerda */
+            color: #28a745; /* Cor verde */
+            background-color: #e6f4ea; /* Cor de fundo da caixa */
+            padding: 10px;
+            border-radius: 5px;
+            border: 2px solid black; /* Adiciona uma borda preta */
+            display: none; /* Oculta inicialmente */
+            align-items: center;
+        }
+
+        .error-message {
+            position: fixed;
+            bottom: 20px; /* Distância do fundo */
+            left: 20px; /* Distância da esquerda */
+            color: #ff0000; /* Cor verde */
+            background-color: #e6f4ea; /* Cor de fundo da caixa */
+            padding: 10px;
+            border-radius: 5px;
+            border: 2px solid black; /* Adiciona uma borda preta */
+            display: none; /* Oculta inicialmente */
+            align-items: center;
+        }
+
+        .check-icon {
+            color: #28a745; /* Cor do ícone de check */
+            font-size: 24px; /* Tamanho do ícone de check */
+            margin-right: 10px; /* Espaço entre o ícone de check e o texto */
+        }
+        .error-icon {
+            color: #dc3545; /* Cor do ícone de erro */
+            font-size: 24px; /* Tamanho do ícone de erro */
+            margin-right: 10px; /* Espaço entre o ícone de erro e o texto */
+        }
+    </style>
+<script>
+    async function register(event) {
+        event.preventDefault();
+        const username = document.getElementById('username').value;
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirm-password').value;
+
+        console.log('Dados enviados para registro:', { username, email, password, confirmPassword });
+
+        const response = await fetch('http://localhost:3000/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ username, email, password, confirmPassword }),
+        });
+
+        if (response.ok) {
+            const result = await response.json();
+            if (result && result.message) {
+                // Exibir a caixa de diálogo de confirmação
+                const confirmationMessage = document.getElementById('confirmation-message');
+                confirmationMessage.innerHTML = `
+                    <span class="check-icon">&#10003;</span> <!-- Ícone de check -->
+                    <span>${result.message}</span>`; // Mensagem de confirmação
+                confirmationMessage.style.display = "flex"; // Mostra a mensagem de confirmação
+
+                // Oculta a mensagem de erro se estiver sendo exibida
+                const errorMessage = document.getElementById('error-message');
+                if (errorMessage.style.display === "flex") {
+                    errorMessage.style.display = "none";
+                }
+
+                // Redirecionar para a página de login após 2 segundos
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 2000);
+            } else {
+                console.error('Resposta do servidor não contém mensagem esperada:', result);
+            }
+        } else if (response.status === 400) {
+            const errorResponse = await response.json();
+            const errorMessage = document.getElementById('error-message');
+            errorMessage.innerHTML = `
+                <span class="error-icon">&#10060;</span> <!-- Ícone de erro -->
+                <span>${errorResponse.message}</span>`; // Mensagem de erro
+            errorMessage.style.display = "flex"; // Mostra a mensagem de erro
+
+            // Oculta a mensagem de erro após 5 segundos
+            setTimeout(() => {
+                errorMessage.style.display = "none";
+            }, 5000);
+        } else {
+            console.error('Falha ao enviar solicitação de registro:', response.status);
+        }
+    }
+</script>    
+</head>
+<body>
+    <div class="container">
+        <h2>Cadastro</h2>
+        <form onsubmit="register(event)">
+            <label for="username">Nome de Usuário:</label>
+            <input type="text" id="username" name="username" required>
+            
+            <label for="email">E-mail:</label>
+            <input type="email" id="email" name="email" required>
+            
+            <label for="password">Senha:</label>
+            <input type="password" id="password" name="password" required>
+            
+            <label for="confirm-password">Repita a Senha:</label>
+            <input type="password" id="confirm-password" name="confirm-password" required>
+            
+            <input type="submit" value="Cadastrar">
+        </form>
+    </div>
+    <div class="confirmation-message" id="confirmation-message"></div> <!-- Div para exibir mensagem de confirmação -->
+    <div class="error-message" id="error-message"></div> <!-- Div para exibir mensagem de erro -->
+</body>
+</html>
